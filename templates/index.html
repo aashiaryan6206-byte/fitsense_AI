@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FitSense AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            <span class="logo-icon">🧘</span>
+            <span>FitSense <strong>AI</strong></span>
+        </div>
+
+        <div class="nav-right">
+
+            <button id="historyButton" class="small-button">History</button>
+
+            <span id="navStatus">
+                Ready
+            </span>
+
+            <button
+                id="soundButton"
+                class="small-button"
+            >
+                🔊 Sound ON
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         HOME / LANGUAGE SCREEN
+    ====================================================== -->
+
+    <main>
+
+        <section
+            id="homeScreen"
+            class="screen active"
+        >
+
+            <div class="hero">
+
+                <div class="hero-content">
+
+                    <div class="badge">
+                        AI-POWERED YOGA ASSISTANT
+                    </div>
+
+                    <h1>
+                        Improve Your Yoga
+                        <span>With AI</span>
+                    </h1>
+
+                    <p>
+                        FitSense AI watches your posture in
+                        real time and guides you toward the
+                        correct yoga position.
+                    </p>
+
+                    <h2>
+                        Select Your Language
+                    </h2>
+
+                    <div class="language-grid">
+
+                        <button
+                            class="language-button"
+                            data-language="en"
+                        >
+                            🇬🇧
+                            <span>English</span>
+                        </button>
+
+                        <button
+                            class="language-button"
+                            data-language="hi"
+                        >
+                            🇮🇳
+                            <span>हिंदी</span>
+                        </button>
+
+                        <button
+                            class="language-button"
+                            data-language="gu"
+                        >
+                            🇮🇳
+                            <span>ગુજરાતી</span>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="hero-visual">
+
+                    <div class="glow"></div>
+
+                    <div class="yoga-figure">
+                        🧘
+                    </div>
+
+                    <div class="floating-card card-one">
+                        📐
+                        <span>Posture Analysis</span>
+                    </div>
+
+                    <div class="floating-card card-two">
+                        🔊
+                        <span>Voice Guidance</span>
+                    </div>
+
+                    <div class="floating-card card-three">
+                        🎯
+                        <span>Real-time Feedback</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="historyScreen" class="screen">
+            <div class="section-container history-page">
+                <div class="section-heading"><div class="badge">YOUR PROGRESS</div><h1>Yoga History</h1><p>Your completed yoga sessions are saved on this device.</p></div>
+                <div class="history-stats"><div><strong id="historySessions">0</strong><span>Sessions</span></div><div><strong id="historyMinutes">0</strong><span>Minutes practiced</span></div><div><strong id="historyScore">0%</strong><span>Average form</span></div></div>
+                <div id="historyList" class="history-list"></div>
+                <button id="clearHistoryButton" class="secondary-button">Clear history</button>
+            </div>
+        </section>
+
+
+        <!-- =================================================
+             YOGA SELECTION
+        ================================================== -->
+
+        <section
+            id="poseScreen"
+            class="screen"
+        >
+
+            <div class="section-container">
+
+                <div class="section-heading">
+
+                    <div class="badge">
+                        STEP 2
+                    </div>
+
+                    <h1 id="choosePoseTitle">
+                        Choose Your Yoga Pose
+                    </h1>
+                    <p id="choosePoseDescription">
+                        Select a pose to begin your AI-guided
+                        session.
+                    </p>
+
+                </div>
+
+
+                <div id="poseGrid" class="pose-grid">
+
+                    <button
+                        class="pose-card selected"
+                        data-pose="tree"
+                    >
+
+                        <div class="pose-icon">
+                            🧘
+                        </div>
+
+                        <div>
+                            <h2 id="treePoseTitle">
+                                Tree Pose
+                            </h2>
+
+                            <p id="treePoseDescription">
+                                Balance on one leg with your
+                                arms raised.
+                            </p>
+                        </div>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <button class="pose-card" data-pose="mountain">
+
+                        <div class="pose-icon">
+                            🧍
+                        </div>
+
+                        <div>
+                            <h2>
+                                Mountain Pose
+                            </h2>
+
+                            <p>
+                                Stand grounded, tall, and balanced.
+                            </p>
+                        </div>
+
+                    </button>
+
+
+                    <button class="pose-card" data-pose="warrior">
+
+                        <div class="pose-icon">
+                            🏹
+                        </div>
+
+                        <div>
+                            <h2>
+                                Warrior II
+                            </h2>
+
+                            <p>
+                                Open your arms wide and bend your front knee.
+                            </p>
+                        </div>
+
+                    </button>
+
+                </div>
+
+
+                <button
+                    id="startButton"
+                    class="primary-button"
+                >
+                    Start AI Session →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             WORKOUT SCREEN
+        ================================================== -->
+
+        <section
+            id="workoutScreen"
+            class="screen"
+        >
+
+            <div class="workout-container">
+
+
+                <!-- =========================================
+                     LEFT: CAMERA
+                ========================================== -->
+
+                <div class="camera-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <span class="live-dot"></span>
+
+                            <span id="cameraTitle">
+                                YOUR CAMERA
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="cameraStatus"
+                            class="status-text"
+                        >
+                            Camera off
+                        </span>
+
+                    </div>
+
+
+                    <div class="camera-wrapper">
+
+                        <video
+                            id="camera"
+                            autoplay
+                            playsinline
+                            muted
+                        ></video>
+
+                        <canvas
+                            id="poseCanvas"
+                        ></canvas>
+
+                        <div
+                            id="cameraMessage"
+                            class="camera-message"
+                        >
+                            Click Start Camera
+                        </div>
+
+                    </div>
+
+
+                    <div class="camera-controls">
+
+                        <button
+                            id="cameraButton"
+                            class="primary-button"
+                        >
+                            📷 Start Camera
+                        </button>
+
+                        <button
+                            id="stopCameraButton"
+                            class="secondary-button"
+                        >
+                            Stop
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================================
+                     RIGHT: AI GUIDE
+                ========================================== -->
+
+                <div class="guide-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            🤖
+                            <span id="guideTitle">
+                                AI YOGA GUIDE
+                            </span>
+                        </div>
+
+                        <span class="ai-badge">
+                            AI
+                        </span>
+
+                    </div>
+
+
+                    <!-- 3D REFERENCE AREA -->
+
+                    <div class="reference-area">
+
+                        <div class="reference-label">
+                            CORRECT POSTURE
+                        </div>
+
+                        <div
+                            id="threeContainer"
+                            class="three-container"
+                        >
+
+                            <img id="poseGuideImage" class="tree-pose-human" src="{{ url_for('static', filename='tree-pose-human.svg') }}" alt="Human demonstrating Tree Pose with arms overhead and one foot on the inner calf.">
+
+                            <div id="referencePoseName" class="reference-pose-name">
+                                Tree Pose: follow these 3 points
+                            </div>
+
+                            <ol class="pose-steps">
+                                <li>Stand tall and look straight ahead.</li>
+                                <li>Place one foot on the opposite inner calf — never on the knee.</li>
+                                <li>Bring both arms overhead and keep your hips level.</li>
+                            </ol>
+
+                            <!-- Temporary 3D-style
+                                 reference.
+                                 Three.js will replace
+                                 this in the next version. -->
+
+                            <div class="reference-human">
+
+                                <div class="head">
+                                    ●
+                                </div>
+
+                                <div class="body">
+                                    │
+                                </div>
+
+                                <div class="arms">
+                                    ╲│╱
+                                </div>
+
+                                <div class="legs">
+                                    ╱│╲
+                                </div>
+
+                            </div>
+
+                            <div class="reference-pose-name">
+                                Tree Pose
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FEEDBACK -->
+
+                    <div class="feedback-box">
+
+                        <div class="feedback-label">
+                            AI FEEDBACK
+                        </div>
+
+                        <div
+                            id="feedback"
+                            class="feedback-text"
+                        >
+                            Start your camera to begin.
+                        </div>
+
+                    </div>
+
+
+                    <!-- STABILITY -->
+
+                    <div class="metric">
+
+                        <div class="metric-header">
+
+                            <span>
+                                Stability
+                            </span>
+
+                            <strong
+                                id="stabilityValue"
+                            >
+                                0%
+                            </strong>
+
+                        </div>
+
+                        <div class="progress">
+                            <div
+                                id="stabilityBar"
+                                class="progress-bar"
+                            ></div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- HOLD TIMER -->
+
+                    <div class="hold-box">
+
+                        <span>
+                            Hold Time
+                        </span>
+
+                        <strong
+                            id="holdTime"
+                        >
+                            0.0s
+                        </strong>
+
+                        <span>
+                            /
+                            <span id="targetTime">
+                                5
+                            </span>
+                            seconds
+                        </span>
+
+                    </div>
+
+
+                    <div class="session-controls">
+
+                        <button
+                            id="exitButton"
+                            class="secondary-button full"
+                        >
+                            ← End Session
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <span>
+            FitSense AI
+        </span>
+
+        <span>
+            AI Yoga Posture Correction
+        </span>
+
+    </footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+
+</html>
