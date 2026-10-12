@@ -179,74 +179,7 @@
                 </div>
 
 
-                <div id="poseGrid" class="pose-grid">
-
-                    <button
-                        class="pose-card selected"
-                        data-pose="tree"
-                    >
-
-                        <div class="pose-icon">
-                            🧘
-                        </div>
-
-                        <div>
-                            <h2 id="treePoseTitle">
-                                Tree Pose
-                            </h2>
-
-                            <p id="treePoseDescription">
-                                Balance on one leg with your
-                                arms raised.
-                            </p>
-                        </div>
-
-                        <span class="arrow">
-                            →
-                        </span>
-
-                    </button>
-
-
-                    <button class="pose-card" data-pose="mountain">
-
-                        <div class="pose-icon">
-                            🧍
-                        </div>
-
-                        <div>
-                            <h2>
-                                Mountain Pose
-                            </h2>
-
-                            <p>
-                                Stand grounded, tall, and balanced.
-                            </p>
-                        </div>
-
-                    </button>
-
-
-                    <button class="pose-card" data-pose="warrior">
-
-                        <div class="pose-icon">
-                            🏹
-                        </div>
-
-                        <div>
-                            <h2>
-                                Warrior II
-                            </h2>
-
-                            <p>
-                                Open your arms wide and bend your front knee.
-                            </p>
-                        </div>
-
-                    </button>
-
-                </div>
-
+                <div id="poseGrid" class="pose-grid"></div>
 
                 <button
                     id="startButton"
@@ -380,6 +313,11 @@
                         >
 
                             <img id="poseGuideImage" class="tree-pose-human" src="{{ url_for('static', filename='tree-pose-human.svg') }}" alt="Human demonstrating Tree Pose with arms overhead and one foot on the inner calf.">
+                            <div id="referenceImageMissing" class="reference-pose-name" hidden>Reference image not available for this pose yet.</div>
+                            <p id="poseDescription" class="pose-description"></p>
+                            <ol id="poseSteps" class="pose-steps"></ol>
+                            <h3>Common mistakes</h3>
+                            <ul id="poseMistakes" class="pose-steps"></ul>
 
                             <div id="referencePoseName" class="reference-pose-name">
                                 Tree Pose: follow these 3 points
@@ -439,6 +377,7 @@
                         >
                             Start your camera to begin.
                         </div>
+                        <div id="correctionMessage" class="feedback-text" hidden></div>
 
                     </div>
 
@@ -537,3 +476,4 @@
 </body>
 
 </html>
+

@@ -1407,6 +1407,11 @@ footer {
 .session-active footer { display: none; }
 .reference-human + .reference-pose-name { display: none; }
 
+#threeContainer { overflow-y: auto; }
+#poseDescription { max-width: 36rem; padding: 0 1rem; text-align: center; }
+#poseSteps, #poseMistakes { text-align: left; }
+#threeContainer [hidden] { display: none !important; }
+
 .tree-pose-human {
     width: min(250px, 68vw);
     height: 270px;

@@ -7,11 +7,8 @@ let isStartingCamera = false;
 let spokenInstructions = new Set();
 let selectedPose = "tree";
 let poseEngine = "tree";
-const poseGuide = {
-    tree: {name: "Tree Pose", image: "/static/tree-pose-human.svg", start: "Camera is on. Start Tree Pose: stand tall, put one foot on the opposite inner calf, and raise both arms."},
-    mountain: {name: "Mountain Pose", image: "/static/mountain-pose-human.svg", start: "Camera is on. Start Mountain Pose: stand tall with both feet grounded and shoulders relaxed."},
-    warrior: {name: "Warrior II", image: "/static/warrior-pose-human.svg", start: "Camera is on. Start Warrior Two: bend your front knee and stretch both arms wide."}
-};
+let poseGuide = {};
+let poseCatalog = {};
 
 const text = {
     en: {
@@ -45,6 +42,49 @@ const text = {
 const links = [[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]];
 const phrase = (key) => text[language][key] || text.en[key];
 
+function renderPose(pose) {
+    const guide = poseCatalog[pose];
+    if (!guide) return;
+    const image = $("poseGuideImage");
+    image.hidden = !guide.image;
+    if (guide.image) image.src = guide.image;
+    image.alt = guide.image ? `Human demonstrating ${guide.name}.` : "";
+    $("referenceImageMissing").hidden = Boolean(guide.image);
+    $("referencePoseName").textContent = guide.name;
+    $("poseDescription").textContent = guide.description;
+    $("poseSteps").replaceChildren(...guide.instructions.map(item => Object.assign(document.createElement("li"), {textContent:item})));
+    $("poseMistakes").replaceChildren(...guide.common_mistakes.map(item => Object.assign(document.createElement("li"), {textContent:item})));
+    document.querySelectorAll("#threeContainer > .pose-steps:not(#poseSteps):not(#poseMistakes)").forEach(item => { item.hidden = true; });
+    $("threeContainer").querySelector(".reference-human")?.setAttribute("hidden", "");
+}
+
+async function loadPoseCatalog() {
+    const response = await fetch("/pose-config");
+    const data = await response.json();
+    poseCatalog = data.poses;
+    const grid = $("poseGrid");
+    grid.replaceChildren();
+    Object.values(poseCatalog).filter(pose => pose.id !== "general").forEach(pose => {
+        const card = document.createElement("button");
+        card.className = "pose-card";
+        card.dataset.pose = pose.id;
+        card.innerHTML = `<div class="pose-icon">🧘</div><div><h2></h2><p></p></div><span class="arrow">→</span>`;
+        card.querySelector("h2").textContent = pose.name;
+        card.querySelector("p").textContent = pose.description;
+        card.onclick = () => {
+            selectedPose = pose.id;
+            poseEngine = pose.id;
+            document.querySelectorAll(".pose-card[data-pose]").forEach(item => item.classList.toggle("selected", item === card));
+            renderPose(selectedPose);
+            feedback.textContent = pose.success_message;
+            show("workoutScreen");
+        };
+        grid.append(card);
+    });
+    poseGuide = Object.fromEntries(Object.entries(poseCatalog).map(([id, pose]) => [id, {name:pose.name, start:`Begin ${pose.name}. ${pose.instructions[0]}`} ]));
+    renderPose(selectedPose);
+}
+
 function speak(value) {
     if (!sound || !("speechSynthesis" in window)) return;
     const voice = new SpeechSynthesisUtterance(value);
@@ -75,7 +115,10 @@ async function analyze() {
     try {
         const response = await fetch("/analyze-pose", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({image:frame.toDataURL("image/jpeg",.72), pose:poseEngine})});
         const result = await response.json(); if (!response.ok) throw Error(result.error);
-        const instruction = phrase(result.instruction); feedback.textContent = instruction; stability.textContent = `${result.stability}%`; bar.style.width = `${result.stability}%`; draw(result.landmarks);
+        if (result.pose?.id) renderPose(result.pose.id);
+        const instruction = result.success_message || phrase(result.instruction); feedback.textContent = instruction; stability.textContent = `${result.stability}%`; bar.style.width = `${result.stability}%`; draw(result.landmarks);
+        $("correctionMessage").hidden = Boolean(result.success_message || !result.correction);
+        $("correctionMessage").textContent = result.success_message ? "" : `Try this: ${result.correction || "Adjust your alignment for this pose."}`;
         // Say a particular correction only once in a session. The on-screen
         // feedback still updates continuously, without repeating audio.
         if (!spokenInstructions.has(result.instruction)) {
@@ -103,7 +146,7 @@ async function startCamera() {
         stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:1280},height:{ideal:720}},audio:false});
         video.srcObject = stream; await video.play(); video.style.display = "block"; message.style.display = "none";
         $("cameraStatus").textContent = "Camera live"; $("navStatus").textContent = "Camera on"; cameraButton.disabled = true; stopButton.disabled = false;
-        const startMessage = poseGuide[selectedPose].start;
+        const startMessage = poseGuide[selectedPose]?.start || "Camera is on. Keep your full body visible and follow the pose guide.";
         startedAt = Date.now(); lastInstruction = ""; spokenInstructions = new Set(["start"]); feedback.textContent = startMessage; speak(startMessage); analyze(); analyzeTimer = setInterval(analyze, 1800);
         holdTimer = setInterval(() => hold.textContent = `${((Date.now()-startedAt)/1000).toFixed(1)}s`, 100);
     } catch (error) {
@@ -135,7 +178,7 @@ function sessions() { return JSON.parse(localStorage.getItem("fitsense-yoga-hist
 function saveSession() {
     const duration = Math.max(1, Math.round((Date.now() - startedAt) / 1000));
     const list = sessions();
-    list.unshift({ pose: poseGuide[selectedPose].name, duration, score: Number.parseInt(stability.textContent) || 0, date: new Date().toLocaleString() });
+    list.unshift({ pose: poseGuide[selectedPose]?.name || "Yoga pose", duration, score: Number.parseInt(stability.textContent) || 0, date: new Date().toLocaleString() });
     localStorage.setItem("fitsense-yoga-history", JSON.stringify(list.slice(0, 100)));
     startedAt = null;
 }
@@ -148,31 +191,11 @@ function renderHistory() {
 }
 
 document.querySelectorAll(".language-button").forEach(button => button.onclick = () => { language = button.dataset.language; show("poseScreen"); });
-document.querySelectorAll(".pose-card[data-pose]").forEach(button => button.onclick = () => {
-    selectedPose = button.dataset.pose;
-    document.querySelectorAll(".pose-card[data-pose]").forEach(card => card.classList.toggle("selected", card === button));
-    const guide = poseGuide[selectedPose];
-    poseEngine = guide.engine || selectedPose;
-    $("poseGuideImage").src = guide.image;
-    $("poseGuideImage").alt = `Human demonstrating ${guide.name}.`;
-    $("referencePoseName").textContent = `${guide.name}: follow the posture guide`;
-    show("workoutScreen");
-});
-
-const yogaLibrary = ["Child's Pose","Cat-Cow","Downward-Facing Dog","Cobra Pose","Sphinx Pose","Bridge Pose","Camel Pose","Chair Pose","Corpse Pose","Crow Pose","Dancer Pose","Dolphin Pose","Eagle Pose","Easy Pose","Fire Log Pose","Fish Pose","Garland Pose","Half Moon Pose","Happy Baby","Head-to-Knee Forward Bend","Hero Pose","Locust Pose","Low Lunge","Lotus Pose","Pigeon Pose","Plank Pose","Pyramid Pose","Reclined Twist","Seated Forward Fold","Staff Pose","Sugarcane Pose","Supported Shoulder Stand","Triangle Pose","Upward-Facing Dog","Wheel Pose","Wide-Legged Forward Fold","Wild Thing","Yogi Squat","Bound Angle Pose","Boat Pose","Bow Pose","Four-Limbed Staff","Forward Fold","Legs-Up-The-Wall","Lizard Pose","Revolved Triangle","Side Plank","Standing Forward Fold","Sun Salutation","Warrior I","Warrior III","Wide Squat"];
-const grid = $("poseGrid");
-yogaLibrary.forEach((name, index) => {
-    const id = `library-${index}`;
-    poseGuide[id] = {name, image:"/static/tree-pose-human.svg", start:`Camera is on. Begin ${name}. Keep your full body visible and move slowly.`, engine:"general"};
-    const card = document.createElement("button");
-    card.className = "pose-card"; card.dataset.pose = id;
-    card.innerHTML = `<div class="pose-icon">🧘</div><div><h2>${name}</h2><p>Guided full-body yoga practice.</p></div><span class="arrow">→</span>`;
-    card.onclick = () => { selectedPose=id; poseEngine="general"; document.querySelectorAll(".pose-card[data-pose]").forEach(item=>item.classList.toggle("selected",item===card)); $("poseGuideImage").src=poseGuide[id].image; $("poseGuideImage").alt=`Human yoga guide for ${name}.`; $("referencePoseName").textContent=`${name}: keep your full body visible`; show("workoutScreen"); };
-    grid.append(card);
-});
 function show(id) { document.querySelectorAll(".screen").forEach(screen => screen.classList.toggle("active", screen.id === id)); document.body.classList.toggle("session-active", id === "workoutScreen"); }
 $("startButton").onclick = () => show("workoutScreen"); $("exitButton").onclick = () => { stopCamera(); show("homeScreen"); };
 $("historyButton").onclick = () => { renderHistory(); show("historyScreen"); };
 $("clearHistoryButton").onclick = () => { localStorage.removeItem("fitsense-yoga-history"); renderHistory(); };
 cameraButton.onclick = startCamera; stopButton.onclick = stopCamera; stopButton.disabled = true;
+loadPoseCatalog().catch(() => { feedback.textContent = "Pose guidance could not be loaded. Refresh the page and try again."; });
 $("soundButton").onclick = () => { sound = !sound; $("soundButton").textContent = sound ? "Sound ON" : "Sound OFF"; if (sound) speak(phrase("sound_on")); else if ("speechSynthesis" in window) speechSynthesis.cancel(); };
+
