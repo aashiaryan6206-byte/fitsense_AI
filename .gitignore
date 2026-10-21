@@ -1,0 +1,17 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local databases & logs
+*.db
+*.sqlite3
+*.log
+
+# Dev SSL certs (keep keys private)
+*.pem

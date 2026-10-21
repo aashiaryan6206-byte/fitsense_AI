@@ -3,15 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>FitSense AI</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitSense AI - AI-Powered Yoga Posture Correction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -19,461 +16,423 @@
     <!-- =====================================================
          NAVBAR
     ====================================================== -->
-
     <header class="navbar">
-
-        <div class="logo">
+        <div class="logo" id="navLogo">
             <span class="logo-icon">🧘</span>
             <span>FitSense <strong>AI</strong></span>
         </div>
 
+        <nav class="nav-links">
+            <button id="navHomeBtn" class="nav-link active">Home</button>
+            <button id="navPosesBtn" class="nav-link">Poses</button>
+            <button id="historyButton" class="nav-link">Progress & History</button>
+        </nav>
+
         <div class="nav-right">
+            <!-- User Profile & Authentication Display -->
+            <div id="userProfileBadge" class="user-badge" title="Click to manage account">
+                <span id="userAvatar" class="user-avatar">🧘‍♂️</span>
+                <div class="user-details">
+                    <span id="userDisplayName" class="user-name">Yogi Alex</span>
+                    <span id="userRole" class="user-tag">Member</span>
+                </div>
+            </div>
 
-            <button id="historyButton" class="small-button">History</button>
-
-            <span id="navStatus">
-                Ready
-            </span>
-
-            <button
-                id="soundButton"
-                class="small-button"
-            >
-                🔊 Sound ON
+            <!-- Login / Sign In Trigger (Visible when guest or clicked) -->
+            <button id="authModalBtn" class="small-button auth-btn">
+                <span>👤</span> Account
             </button>
 
+            <!-- Sound Guidance Toggle -->
+            <button id="soundButton" class="small-button sound-btn" title="Toggle audio feedback">
+                🔊 Sound ON
+            </button>
         </div>
-
     </header>
 
 
     <!-- =====================================================
-         HOME / LANGUAGE SCREEN
+         AUTHENTICATION MODAL (LOGIN & USERNAME)
     ====================================================== -->
+    <div id="authModal" class="modal-overlay" style="display: none;" hidden>
+        <div class="modal-container">
+            <button id="closeAuthModal" class="modal-close" aria-label="Close dialog">&times;</button>
+            
+            <div class="auth-tabs">
+                <button id="tabLogin" class="auth-tab active" data-tab="login">Sign In / Join</button>
+                <button id="tabGuest" class="auth-tab" data-tab="guest">Guest Mode</button>
+            </div>
+
+            <!-- SMART LOGIN & REGISTER FORM -->
+            <form id="loginForm" class="auth-form active">
+                <div class="form-header">
+                    <h2 id="authFormTitle">Sign In or Create Account</h2>
+                    <p>Enter your username or name. If you are new, your account will be created instantly!</p>
+                </div>
+                <div id="loginError" class="auth-error-msg" hidden></div>
+                <div id="loginSuccess" class="auth-success-msg" hidden></div>
+
+                <div class="form-group">
+                    <label for="loginUsername">Your Username or Name</label>
+                    <input type="text" id="loginUsername" placeholder="e.g. Alex or Priya" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password <span class="label-hint">(optional for quick start)</span></label>
+                    <input type="password" id="loginPassword" placeholder="Enter password (or leave blank)" autocomplete="current-password">
+                </div>
+
+                <div class="form-group">
+                    <label>Choose Your Avatar</label>
+                    <div class="avatar-picker">
+                        <button type="button" class="avatar-opt selected" data-avatar="🧘‍♂️">🧘‍♂️</button>
+                        <button type="button" class="avatar-opt" data-avatar="🧘‍♀️">🧘‍♀️</button>
+                        <button type="button" class="avatar-opt" data-avatar="⚡">⚡</button>
+                        <button type="button" class="avatar-opt" data-avatar="🌸">🌸</button>
+                        <button type="button" class="avatar-opt" data-avatar="🌟">🌟</button>
+                        <button type="button" class="avatar-opt" data-avatar="🌿">🌿</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="primary-button full" id="loginSubmitBtn">
+                    Sign In & Open Yoga Camera 🚀
+                </button>
+
+                <div id="currentUserActions" class="current-user-box" hidden>
+                    <span>Currently signed in as: <strong id="modalCurrentUserName">Yogi</strong></span>
+                    <button type="button" id="logoutBtn" class="logout-button">Log Out</button>
+                </div>
+            </form>
+
+            <!-- GUEST / QUICK NAME -->
+            <form id="guestForm" class="auth-form" hidden>
+                <div class="form-header">
+                    <h2>Quick Guest Mode</h2>
+                    <p>Practice as a guest with temporary session tracking.</p>
+                </div>
+                <div class="form-group">
+                    <label for="guestNameInput">Guest Name</label>
+                    <input type="text" id="guestNameInput" placeholder="e.g. Guest Yogi" required>
+                </div>
+                <button type="submit" class="primary-button full">Continue As Guest</button>
+            </form>
+        </div>
+    </div>
+
 
     <main>
-
-        <section
-            id="homeScreen"
-            class="screen active"
-        >
-
+        <!-- =====================================================
+             HOME SCREEN
+        ====================================================== -->
+        <section id="homeScreen" class="screen active">
             <div class="hero">
-
                 <div class="hero-content">
+                    <div class="welcome-user-tag" id="welcomeUserBanner">
+                        <span class="user-wave">👋</span>
+                        <span id="welcomeGreeting">Namaste, Yogi Alex!</span>
+                    </div>
 
                     <div class="badge">
-                        AI-POWERED YOGA ASSISTANT
+                        ✨ REAL-TIME AI YOGA TRAINER • ULTRA-FAST 60 FPS
                     </div>
 
                     <h1>
-                        Improve Your Yoga
-                        <span>With AI</span>
+                        Master Every Asana
+                        <span>With Vision AI</span>
                     </h1>
 
                     <p>
-                        FitSense AI watches your posture in
-                        real time and guides you toward the
-                        correct yoga position.
+                        FitSense AI analyzes your posture in real time with high-speed computer vision.
+                        Get instant biomechanical alignment cues, audio corrections, and watch side-by-side
+                        animated demonstrations.
                     </p>
 
-                    <h2>
-                        Select Your Language
-                    </h2>
-
-                    <div class="language-grid">
-
-                        <button
-                            class="language-button"
-                            data-language="en"
-                        >
-                            🇬🇧
-                            <span>English</span>
+                    <!-- DIRECT INSTANT LOGIN & CAMERA OPEN FORM -->
+                    <form id="heroQuickLoginForm" class="hero-quick-login">
+                        <div class="quick-input-wrap">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="heroUsernameInput" placeholder="Enter your name to start (e.g. Aashi)..." required autocomplete="username">
+                        </div>
+                        <button type="submit" class="primary-button hero-start-btn" id="heroQuickStartBtn">
+                            Start Yoga Camera 🚀
                         </button>
+                    </form>
 
-                        <button
-                            class="language-button"
-                            data-language="hi"
-                        >
-                            🇮🇳
-                            <span>हिंदी</span>
+                    <div class="hero-secondary-actions">
+                        <button id="heroPosesBtn" class="secondary-button small">
+                            Browse All Poses
                         </button>
-
-                        <button
-                            class="language-button"
-                            data-language="gu"
-                        >
-                            🇮🇳
-                            <span>ગુજરાતી</span>
+                        <button id="heroHistoryBtn" class="secondary-button small">
+                            View My Progress
                         </button>
-
                     </div>
 
+                    <div class="language-selector-section">
+                        <h2>Select Voice Language</h2>
+                        <div class="language-grid">
+                            <button class="language-button active" data-language="en">
+                                🇬🇧 <span>English</span>
+                            </button>
+                            <button class="language-button" data-language="hi">
+                                🇮🇳 <span>हिंदी</span>
+                            </button>
+                            <button class="language-button" data-language="gu">
+                                🇮🇳 <span>ગુજરાતી</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-
 
                 <div class="hero-visual">
-
                     <div class="glow"></div>
-
-                    <div class="yoga-figure">
-                        🧘
+                    <div class="hero-avatar-card">
+                        <div class="hero-avatar-anim">
+                            <span class="hero-avatar-emoji">🧘</span>
+                        </div>
+                        <div class="floating-badge badge-top">
+                            <span class="dot-live"></span> 60 FPS Pose Tracking
+                        </div>
+                        <div class="floating-badge badge-mid">
+                            <span>🎯</span> Real-Time Angle Analysis
+                        </div>
+                        <div class="floating-badge badge-bot">
+                            <span>🔊</span> Instant Voice Corrections
+                        </div>
                     </div>
-
-                    <div class="floating-card card-one">
-                        📐
-                        <span>Posture Analysis</span>
-                    </div>
-
-                    <div class="floating-card card-two">
-                        🔊
-                        <span>Voice Guidance</span>
-                    </div>
-
-                    <div class="floating-card card-three">
-                        🎯
-                        <span>Real-time Feedback</span>
-                    </div>
-
                 </div>
-
             </div>
-
         </section>
 
+
+        <!-- =====================================================
+             PROGRESS & HISTORY SCREEN
+        ====================================================== -->
         <section id="historyScreen" class="screen">
             <div class="section-container history-page">
-                <div class="section-heading"><div class="badge">YOUR PROGRESS</div><h1>Yoga History</h1><p>Your completed yoga sessions are saved on this device.</p></div>
-                <div class="history-stats"><div><strong id="historySessions">0</strong><span>Sessions</span></div><div><strong id="historyMinutes">0</strong><span>Minutes practiced</span></div><div><strong id="historyScore">0%</strong><span>Average form</span></div></div>
+                <div class="section-heading">
+                    <div class="badge">YOUR PERSONAL RECORD</div>
+                    <h1 id="historyUserTitle">Yoga Journey</h1>
+                    <p id="historySubtitle">Sessions and posture accuracy saved under your account.</p>
+                </div>
+
+                <div class="history-stats">
+                    <div class="stat-card">
+                        <span class="stat-icon">🧘</span>
+                        <strong id="historySessions">0</strong>
+                        <span>Sessions Completed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">⏱</span>
+                        <strong id="historyMinutes">0</strong>
+                        <span>Minutes Practiced</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">🎯</span>
+                        <strong id="historyScore">0%</strong>
+                        <span>Average Form Score</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">⭐</span>
+                        <strong id="historyFavorite">Tree Pose</strong>
+                        <span>Favorite Asana</span>
+                    </div>
+                </div>
+
+                <div class="history-actions-bar">
+                    <h2>Session History</h2>
+                    <button id="clearHistoryButton" class="secondary-button small">Reset History</button>
+                </div>
+
                 <div id="historyList" class="history-list"></div>
-                <button id="clearHistoryButton" class="secondary-button">Clear history</button>
+
+                <div class="history-footer">
+                    <button id="historyBackBtn" class="primary-button">← Back to Poses</button>
+                </div>
             </div>
         </section>
 
 
-        <!-- =================================================
-             YOGA SELECTION
-        ================================================== -->
-
-        <section
-            id="poseScreen"
-            class="screen"
-        >
-
+        <!-- =====================================================
+             POSE SELECTION SCREEN (STEP 2)
+        ====================================================== -->
+        <section id="poseScreen" class="screen">
             <div class="section-container">
-
                 <div class="section-heading">
-
-                    <div class="badge">
-                        STEP 2
-                    </div>
-
-                    <h1 id="choosePoseTitle">
-                        Choose Your Yoga Pose
-                    </h1>
+                    <div class="badge">STEP 2 • CHOOSE YOUR ASANA</div>
+                    <h1 id="choosePoseTitle">Select Your Yoga Pose</h1>
                     <p id="choosePoseDescription">
-                        Select a pose to begin your AI-guided
-                        session.
+                        Choose a pose below to see its animated reference guide and begin real-time posture analysis.
                     </p>
-
                 </div>
 
-
+                <!-- POSE GRID WITH ANIMATED PREVIEW CARDS -->
                 <div id="poseGrid" class="pose-grid"></div>
 
-                <button
-                    id="startButton"
-                    class="primary-button"
-                >
-                    Start AI Session →
-                </button>
-
+                <div class="pose-footer-actions">
+                    <button id="startButton" class="primary-button big">
+                        Start AI Guided Session →
+                    </button>
+                </div>
             </div>
-
         </section>
 
 
-        <!-- =================================================
-             WORKOUT SCREEN
-        ================================================== -->
-
-        <section
-            id="workoutScreen"
-            class="screen"
-        >
-
+        <!-- =====================================================
+             WORKOUT / CAMERA SCREEN (STEP 3)
+        ====================================================== -->
+        <section id="workoutScreen" class="screen">
             <div class="workout-container">
 
-
-                <!-- =========================================
-                     LEFT: CAMERA
-                ========================================== -->
-
+                <!-- =============================================
+                     LEFT: FAST LIVE CAMERA FEED
+                ============================================== -->
                 <div class="camera-panel">
-
                     <div class="panel-header">
-
-                        <div>
-
-                            <span class="live-dot"></span>
-
-                            <span id="cameraTitle">
-                                YOUR CAMERA
-                            </span>
-
+                        <div class="panel-title-group">
+                            <span class="live-dot" id="liveDotIndicator"></span>
+                            <span id="cameraTitle" class="panel-title-text">YOUR CAMERA</span>
+                            <span class="fps-badge" id="fpsDisplay">-- FPS</span>
                         </div>
-
-                        <span
-                            id="cameraStatus"
-                            class="status-text"
-                        >
-                            Camera off
-                        </span>
-
+                        <span id="cameraStatus" class="status-pill status-ready">Ready</span>
                     </div>
-
 
                     <div class="camera-wrapper">
+                        <!-- Camera Video Stream -->
+                        <video id="camera" autoplay playsinline muted></video>
 
-                        <video
-                            id="camera"
-                            autoplay
-                            playsinline
-                            muted
-                        ></video>
+                        <!-- High-speed Canvas Overlay (60 FPS interpolated) -->
+                        <canvas id="poseCanvas"></canvas>
 
-                        <canvas
-                            id="poseCanvas"
-                        ></canvas>
-
-                        <div
-                            id="cameraMessage"
-                            class="camera-message"
-                        >
-                            Click Start Camera
+                        <!-- Real-time HUD Target Angle Overlay -->
+                        <div id="hudOverlay" class="hud-overlay" hidden>
+                            <div class="hud-pill" id="hudAnglePill">
+                                <span class="hud-label">Knee Angle:</span>
+                                <strong id="hudAngleValue">--°</strong>
+                            </div>
                         </div>
 
+                        <!-- Camera Status / Permission Message Overlay -->
+                        <div id="cameraMessage" class="camera-message">
+                            <div class="camera-prompt-icon">📷</div>
+                            <h3>Click Start Camera</h3>
+                            <p>FitSense will analyze your posture at 60 FPS.</p>
+                        </div>
                     </div>
 
-
+                    <!-- Camera Control Bar -->
                     <div class="camera-controls">
-
-                        <button
-                            id="cameraButton"
-                            class="primary-button"
-                        >
+                        <button id="cameraButton" class="primary-button">
                             📷 Start Camera
                         </button>
-
-                        <button
-                            id="stopCameraButton"
-                            class="secondary-button"
-                        >
-                            Stop
+                        <button id="stopCameraButton" class="secondary-button" disabled>
+                            ⏹ Stop
                         </button>
-
+                        <button id="switchPoseBtn" class="secondary-button" title="Change target pose">
+                            🔄 Change Pose
+                        </button>
                     </div>
-
                 </div>
 
 
-                <!-- =========================================
-                     RIGHT: AI GUIDE
-                ========================================== -->
-
+                <!-- =============================================
+                     RIGHT: ANIMATED PICTURE & AI GUIDE (SIDE PANEL)
+                ============================================== -->
                 <div class="guide-panel">
-
                     <div class="panel-header">
-
-                        <div>
-                            🤖
-                            <span id="guideTitle">
-                                AI YOGA GUIDE
-                            </span>
+                        <div class="panel-title-group">
+                            <span>🤖</span>
+                            <span id="guideTitle" class="panel-title-text">AI YOGA GUIDE</span>
                         </div>
-
-                        <span class="ai-badge">
-                            AI
-                        </span>
-
+                        <span class="ai-badge">VISION AI</span>
                     </div>
 
-
-                    <!-- 3D REFERENCE AREA -->
-
+                    <!-- ANIMATED VISUAL GUIDE CONTAINER ("atside make animated picture") -->
                     <div class="reference-area">
-
-                        <div class="reference-label">
-                            CORRECT POSTURE
+                        <div class="reference-top-bar">
+                            <span class="reference-label">CORRECT POSTURE ANIMATION</span>
+                            <span id="poseDifficultyBadge" class="difficulty-pill">Beginner</span>
                         </div>
 
-                        <div
-                            id="threeContainer"
-                            class="three-container"
-                        >
-
-                            <img id="poseGuideImage" class="tree-pose-human" src="{{ url_for('static', filename='tree-pose-human.svg') }}" alt="Human demonstrating Tree Pose with arms overhead and one foot on the inner calf.">
-                            <div id="referenceImageMissing" class="reference-pose-name" hidden>Reference image not available for this pose yet.</div>
-                            <p id="poseDescription" class="pose-description"></p>
-                            <ol id="poseSteps" class="pose-steps"></ol>
-                            <h3>Common mistakes</h3>
-                            <ul id="poseMistakes" class="pose-steps"></ul>
-
-                            <div id="referencePoseName" class="reference-pose-name">
-                                Tree Pose: follow these 3 points
-                            </div>
-
-                            <ol class="pose-steps">
-                                <li>Stand tall and look straight ahead.</li>
-                                <li>Place one foot on the opposite inner calf — never on the knee.</li>
-                                <li>Bring both arms overhead and keep your hips level.</li>
-                            </ol>
-
-                            <!-- Temporary 3D-style
-                                 reference.
-                                 Three.js will replace
-                                 this in the next version. -->
-
-                            <div class="reference-human">
-
-                                <div class="head">
-                                    ●
-                                </div>
-
-                                <div class="body">
-                                    │
-                                </div>
-
-                                <div class="arms">
-                                    ╲│╱
-                                </div>
-
-                                <div class="legs">
-                                    ╱│╲
-                                </div>
-
-                            </div>
-
-                            <div class="reference-pose-name">
-                                Tree Pose
-                            </div>
-
+                        <!-- DYNAMIC ANIMATED POSE VISUALIZER -->
+                        <div id="animatedPoseGuide" class="animated-guide-container">
+                            <!-- Populated dynamically by PoseVisualizer -->
                         </div>
-
                     </div>
 
+                    <!-- REAL-TIME ALIGNMENT CHECKPOINTS ("Guess & Match this Shape") -->
+                    <div class="checkpoints-box">
+                        <div class="checkpoints-header">
+                            <span>ALIGNMENT CHECKLIST</span>
+                            <span id="checkpointsSummary" class="checkpoints-status">Match all points</span>
+                        </div>
+                        <ul id="checkpointsList" class="checkpoints-checklist">
+                            <!-- Rendered dynamically per pose -->
+                        </ul>
+                    </div>
 
-                    <!-- FEEDBACK -->
-
+                    <!-- LIVE AI FEEDBACK & CORRECTION ADVICE -->
                     <div class="feedback-box">
-
-                        <div class="feedback-label">
-                            AI FEEDBACK
+                        <div class="feedback-header">
+                            <span class="feedback-label">REAL-TIME COACH FEEDBACK</span>
+                            <span class="feedback-indicator"></span>
                         </div>
-
-                        <div
-                            id="feedback"
-                            class="feedback-text"
-                        >
-                            Start your camera to begin.
+                        <div id="feedback" class="feedback-text">
+                            Start your camera to begin pose detection.
                         </div>
-                        <div id="correctionMessage" class="feedback-text" hidden></div>
-
+                        <div id="correctionMessage" class="correction-alert" hidden></div>
                     </div>
 
-
-                    <!-- STABILITY -->
-
+                    <!-- STABILITY METRIC -->
                     <div class="metric">
-
                         <div class="metric-header">
-
-                            <span>
-                                Stability
-                            </span>
-
-                            <strong
-                                id="stabilityValue"
-                            >
-                                0%
-                            </strong>
-
+                            <span>Form Alignment Stability</span>
+                            <strong id="stabilityValue">0%</strong>
                         </div>
-
                         <div class="progress">
-                            <div
-                                id="stabilityBar"
-                                class="progress-bar"
-                            ></div>
+                            <div id="stabilityBar" class="progress-bar"></div>
                         </div>
-
                     </div>
-
 
                     <!-- HOLD TIMER -->
-
                     <div class="hold-box">
-
-                        <span>
-                            Hold Time
-                        </span>
-
-                        <strong
-                            id="holdTime"
-                        >
-                            0.0s
-                        </strong>
-
-                        <span>
-                            /
-                            <span id="targetTime">
-                                5
-                            </span>
-                            seconds
-                        </span>
-
+                        <div class="hold-circle-wrap">
+                            <svg class="hold-svg" viewBox="0 0 80 80">
+                                <circle class="hold-bg-circle" cx="40" cy="40" r="34"></circle>
+                                <circle id="holdRing" class="hold-progress-circle" cx="40" cy="40" r="34"></circle>
+                            </svg>
+                            <span class="hold-timer-center" id="holdTime">0.0s</span>
+                        </div>
+                        <div class="hold-info">
+                            <strong>Hold Steady</strong>
+                            <span>Target: <span id="targetTime">5</span> seconds for success</span>
+                        </div>
                     </div>
-
 
                     <div class="session-controls">
-
-                        <button
-                            id="exitButton"
-                            class="secondary-button full"
-                        >
-                            ← End Session
+                        <button id="exitButton" class="secondary-button full">
+                            ← End Session & Save
                         </button>
-
                     </div>
-
                 </div>
 
             </div>
-
         </section>
-
     </main>
 
 
     <!-- =====================================================
          FOOTER
     ====================================================== -->
-
     <footer>
-
-        <span>
-            FitSense AI
-        </span>
-
-        <span>
-            AI Yoga Posture Correction
-        </span>
-
+        <div class="footer-content">
+            <span>🧘 FitSense AI • Real-Time Computer Vision Yoga Coach</span>
+            <span>Local • Private • Fast 60 FPS Pose Detection</span>
+        </div>
     </footer>
 
-<script src="{{ url_for('static', filename='app.js') }}"></script>
-
+    <!-- SCRIPTS -->
+    <script src="{{ url_for('static', filename='pose-visualizer.js') }}"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 
 </html>
-

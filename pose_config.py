@@ -1,108 +1,372 @@
-"""Pose guidance catalog served to the browser and used by pose analysis."""
+"""Pose guidance catalog served to the browser and used by pose analysis.
+Enriched with biomechanical angle rules, animated visualizer definitions, and hints.
+"""
 
 POSE_CONFIG = {
     "tree": {
-        "name": "Tree Pose", "image": "/static/tree-pose-human.svg",
-        "description": "Balance on one leg with the other foot supported on the inner calf or thigh.",
-        "instructions": ["Root the standing foot and keep its toes relaxed.", "Place the raised foot on the inner calf or thigh, never on the knee.", "Keep both hip points facing forward and lift through the crown of your head.", "Bring your hands overhead only while keeping your shoulders relaxed."],
-        "common_mistakes": ["Raised foot presses against the knee.", "Standing hip hikes or rotates outward."],
-        "corrections": {"foot placement": "Move the raised foot to the inner calf or thigh; leave the knee joint clear.", "hip alignment": "Level both sides of your pelvis and face your hips forward.", "arm position": "Reach both arms overhead while relaxing your shoulders.", "leg position": "Bend the raised knee and place that foot on the inner calf or thigh.", "posture": "Stack shoulders over hips and face your hips forward."},
-        "success_message": "Steady Tree Pose. Keep your standing foot grounded and breathe smoothly.",
+        "name": "Tree Pose (Vrikshasana)",
+        "sanskrit": "Vrikshasana",
+        "difficulty": "Beginner / Intermediate",
+        "category": "Balance & Focus",
+        "target_hold": 5,
+        "image": "/static/tree-pose-human.svg",
+        "anim_type": "tree",
+        "guess_hint": "Stand on one leg, place the other foot on your inner calf/thigh, and raise your hands overhead.",
+        "description": "Balance gracefully on one leg with the opposite foot supported on the inner calf or thigh, reaching arms toward the sky.",
+        "instructions": [
+            "Root down firmly through your standing foot, spreading your toes.",
+            "Lift the opposite foot and place it on your inner calf or inner thigh — never on the knee.",
+            "Bring your hands overhead into prayer (Anjali Mudra) or reach wide.",
+            "Level your hips and lengthen upward through the crown of your head."
+        ],
+        "common_mistakes": [
+            "Pressing the raised foot directly against the standing knee joint.",
+            "Tilting or hiking the hip outward.",
+            "Hunching shoulders up toward the ears."
+        ],
+        "corrections": {
+            "foot placement": "Place your raised foot on your inner calf or thigh; keep your knee joint clear.",
+            "arm position": "Reach both arms overhead while keeping your shoulders relaxed.",
+            "posture": "Lengthen your spine and square both hips forward.",
+            "visibility": "Step back until your whole body is visible in the frame."
+        },
+        "checkpoints": [
+            {"id": "arms_up", "label": "Arms overhead"},
+            {"id": "bent_leg", "label": "One leg bent at calf/thigh"},
+            {"id": "upright", "label": "Spine tall & balanced"}
+        ],
+        "success_message": "Perfect Tree Pose! Steady balance, grounded foot, and relaxed breathing."
     },
     "mountain": {
-        "name": "Mountain Pose", "image": "/static/mountain-pose-human.svg",
-        "description": "Stand evenly through both feet with a long, relaxed spine.",
-        "instructions": ["Place feet hip-width apart or together and spread your toes.", "Distribute weight across the heel, big-toe mound, and little-toe mound.", "Soften the knees without locking them; stack ribs over pelvis.", "Let arms rest by your sides and broaden across the collarbones."],
-        "common_mistakes": ["Weight shifts onto one foot or the heels.", "Knees lock and ribs flare forward."],
-        "corrections": {"weight balance": "Press evenly through the three points of both feet.", "leg alignment": "Unlock the knees and bring your lower ribs over your pelvis.", "posture": "Stack shoulders over hips and keep your spine comfortably tall."},
-        "success_message": "Strong Mountain Pose. Stay grounded through both feet and breathe steadily.",
+        "name": "Mountain Pose (Tadasana)",
+        "sanskrit": "Tadasana",
+        "difficulty": "Beginner",
+        "category": "Foundation & Posture",
+        "target_hold": 5,
+        "image": "/static/mountain-pose-human.svg",
+        "anim_type": "mountain",
+        "guess_hint": "Stand tall like a mountain with both feet grounded, long spine, and arms resting comfortably at your sides.",
+        "description": "The foundational standing posture: stand evenly through both feet with an elongated, peaceful spine and relaxed shoulders.",
+        "instructions": [
+            "Stand with feet hip-width apart or touching, weight evenly distributed.",
+            "Engage your quadriceps gently without locking your knees.",
+            "Stack shoulders directly over hips, and pelvis neutral.",
+            "Relax your arms by your sides, palms facing gently forward."
+        ],
+        "common_mistakes": [
+            "Locking the knee joints backward.",
+            "Leaning weight into the heels or onto one foot.",
+            "Flaring the lower ribs or arching the lower back excessively."
+        ],
+        "corrections": {
+            "weight balance": "Distribute weight evenly across both feet.",
+            "posture": "Grow tall through the crown and soften your shoulders away from ears.",
+            "leg alignment": "Unlock your knees gently and engage your core.",
+            "visibility": "Step back so your full head-to-toe body is visible."
+        },
+        "checkpoints": [
+            {"id": "both_legs_straight", "label": "Both legs straight & grounded"},
+            {"id": "upright_spine", "label": "Tall spine stacked over hips"},
+            {"id": "arms_relaxed", "label": "Arms relaxed at sides"}
+        ],
+        "success_message": "Solid Mountain Pose! Grounded, centered, and standing tall."
     },
     "warrior": {
-        "name": "Warrior II", "image": "/static/warrior-pose-human.svg",
-        "description": "Build a wide stance, bend the front knee, and extend both arms at shoulder height.",
-        "instructions": ["Separate your feet into a wide stance and turn the front toes forward.", "Bend the front knee over the ankle while keeping the back leg strong.", "Stack shoulders over hips and extend both arms parallel to the floor.", "Gaze calmly over the front hand without leaning your torso forward."],
-        "common_mistakes": ["Front knee falls inward or moves beyond the ankle.", "Back foot turns in or arms drop below shoulder height."],
-        "corrections": {"front knee": "Track the kneecap toward the second toe and keep it over the ankle.", "arms": "Reach through both fingertips at shoulder height; keep the back leg active."},
-        "success_message": "Strong Warrior II. Keep the front knee tracking over the ankle and reach through both arms.",
+        "name": "Warrior II (Virabhadrasana II)",
+        "sanskrit": "Virabhadrasana II",
+        "difficulty": "Intermediate",
+        "category": "Strength & Stamina",
+        "target_hold": 5,
+        "image": "/static/warrior-pose-human.svg",
+        "anim_type": "warrior",
+        "guess_hint": "Take a wide stance, bend your front knee into a 90° lunge, and stretch both arms out parallel to the mat.",
+        "description": "A powerful stance building stamina, hip flexibility, and fierce concentration.",
+        "instructions": [
+            "Step feet wide apart; turn front toes forward and back foot slightly angled.",
+            "Bend the front knee directly over the front ankle toward 90 degrees.",
+            "Keep the back leg straight, firm, and fully grounded.",
+            "Extend both arms parallel to the floor at shoulder level; gaze softly over the front fingertips."
+        ],
+        "common_mistakes": [
+            "Front knee collapsing inward past the big toe.",
+            "Torso leaning forward toward the front knee instead of centering over hips.",
+            "Dropping arms below shoulder height."
+        ],
+        "corrections": {
+            "front knee": "Bend front knee deeply until it stacks over your ankle.",
+            "arms": "Reach both arms straight out at shoulder level, parallel to the ground.",
+            "posture": "Stack your shoulders directly above your hips, centering your torso.",
+            "visibility": "Step back so your full wide stance is in camera view."
+        },
+        "checkpoints": [
+            {"id": "front_lunge", "label": "Front knee bent at ~90°"},
+            {"id": "arms_horizontal", "label": "Arms stretched wide at shoulders"},
+            {"id": "back_leg_straight", "label": "Back leg straight & strong"}
+        ],
+        "success_message": "Fierce Warrior II! Powerful lunge, wide arm span, and steady focus."
     },
-}
-
-# Each additional pose already offered by the UI has a distinct, pose-specific
-# cue set. No reference art for these poses is present in the project assets.
-_EXTRA_POSES = {
-    "Child's Pose": ("Rest hips toward heels with knees comfortable apart.", "Reach arms forward and lengthen the sides of your torso.", "Hips remain high", "Soften the hips toward the heels only as far as your knees allow."),
-    "Cat-Cow": ("On hands and knees, stack wrists under shoulders and knees under hips.", "Inhale to broaden the chest; exhale to round the spine and draw the navel in.", "Shoulders collapse", "Press the floor away and move the spine gradually with each breath."),
-    "Downward-Facing Dog": ("Spread fingers and press evenly through both hands.", "Lift hips up and back while keeping the spine long.", "Lower back rounds", "Bend the knees and lift the hips higher to lengthen your back."),
-    "Cobra Pose": ("Place hands beside the lower ribs with elbows close to your sides.", "Use a gentle backbend led by the chest; keep the pelvis grounded.", "Arms force the lift", "Reduce the lift and draw your chest forward without pushing hard through your hands."),
-    "Sphinx Pose": ("Place elbows beneath shoulders and forearms parallel.", "Lengthen forward through the crown while keeping the pubic bone grounded.", "Shoulders creep to ears", "Draw shoulders down and broaden the collarbones."),
-    "Bridge Pose": ("Plant feet hip-width apart with heels close enough to touch lightly.", "Press through feet and lift hips while keeping knees parallel.", "Knees splay outward", "Keep knees tracking over ankles and engage the inner thighs gently."),
-    "Camel Pose": ("Kneel with knees hip-width and thighs upright.", "Lengthen upward before taking a small backbend; support the low back if needed.", "Hips shift behind knees", "Bring hips over knees and keep the bend distributed through the upper back."),
-    "Chair Pose": ("Sit hips back as if reaching for a chair, keeping weight in the heels.", "Keep knees tracking in line with toes and lift the chest.", "Knees move inward", "Press knees gently apart to align them over the middle toes."),
-    "Corpse Pose": ("Lie on your back with legs relaxed and comfortably apart.", "Rest arms beside the body with palms open and jaw soft.", "Tension in face or hands", "Unclench the jaw and let the fingers rest without effort."),
-    "Crow Pose": ("Place hands shoulder-width apart and spread fingers firmly.", "Rest knees high on the upper arms and shift shoulders forward gradually.", "Weight stays behind wrists", "Lean forward until shoulders move ahead of wrists before lifting a foot."),
-    "Dancer Pose": ("Stand tall and hold one foot behind you with the same-side hand.", "Press the foot into the hand as the chest reaches forward.", "Standing knee locks", "Keep a soft bend in the standing knee and steady your gaze."),
-    "Dolphin Pose": ("Set forearms shoulder-width apart and press them down.", "Lift hips up and back while lengthening the spine.", "Elbows slide wide", "Keep elbows beneath shoulders and press forearms evenly."),
-    "Eagle Pose": ("Bend both knees and cross one thigh over the other.", "Wrap arms at the elbows and lift elbows while relaxing shoulders.", "Standing foot loses balance", "Use a wall or uncross the toes to steady the standing leg."),
-    "Easy Pose": ("Sit on a folded blanket with legs crossed comfortably.", "Stack shoulders over hips and let the knees release toward the floor.", "Lower back slumps", "Sit higher and tip the pelvis slightly forward to lengthen the spine."),
-    "Fire Log Pose": ("Stack one shin over the other with ankles above knees.", "Flex both feet and sit evenly on both sitting bones.", "Ankle presses into knee", "Adjust the shin position so ankle rests above the knee, not on it."),
-    "Fish Pose": ("Lie back and place forearms beside your torso.", "Lift the chest and rest the crown lightly without putting weight on the head.", "Neck bears body weight", "Support your upper back with your arms and keep pressure off the head."),
-    "Garland Pose": ("Set feet slightly wider than hips and turn toes out naturally.", "Lower into a squat while keeping heels grounded if comfortable.", "Heels lift and torso collapses", "Widen your stance or place a folded support under your heels."),
-    "Half Moon Pose": ("Place one hand on a block below the shoulder and open the chest sideways.", "Stack the lifted hip over the standing hip and flex the raised foot.", "Top hip rolls toward floor", "Rotate your ribs and pelvis open while keeping the standing leg firm."),
-    "Happy Baby": ("Lie on your back and draw knees toward your armpits.", "Hold feet or ankles and keep the sacrum heavy on the floor.", "Shoulders lift", "Hold behind the thighs and relax your shoulders toward the mat."),
-    "Head-to-Knee Forward Bend": ("Extend one leg and bend the other foot toward the inner thigh.", "Hinge from the hips over the straight leg with a long spine.", "Back rounds to reach the foot", "Use a strap and stop where you can keep the spine long."),
-    "Hero Pose": ("Kneel with knees together and feet outside the hips.", "Sit between heels only if knees feel comfortable; elevate hips on a block as needed.", "Knee discomfort", "Raise the seat on firm support or leave the pose if knees feel strained."),
-    "Locust Pose": ("Lie on your belly with legs extended and arms beside you.", "Reach legs back and lift chest gently without compressing the neck.", "Chin juts forward", "Keep the back of your neck long and gaze down slightly."),
-    "Low Lunge": ("Step one foot forward and lower the back knee with padding if needed.", "Keep the front knee above the ankle and lift the chest.", "Front knee passes far ahead", "Shorten your stance or shift the front foot forward until knee stacks over ankle."),
-    "Lotus Pose": ("Sit tall and cross legs only within comfortable hip rotation.", "Place each foot on the opposite thigh without pulling the knee.", "Knee is forced downward", "Choose an easier cross-legged seat; never press a bent knee into position."),
-    "Pigeon Pose": ("Bring one shin forward and extend the other leg behind you.", "Square hips as much as comfortable and support the front hip with a block.", "Front knee feels pinched", "Bring the front heel closer to the pelvis and support the hip."),
-    "Plank Pose": ("Stack shoulders over wrists and press the floor away.", "Reach heels back and keep head, hips, and heels in one line.", "Hips sag", "Draw the lower belly in and lower knees if needed to keep a straight line."),
-    "Pyramid Pose": ("Set feet on two tracks with front toes facing forward.", "Hinge over the front leg while keeping both sides of the waist long.", "Back rounds", "Bend the front knee slightly and bring hands to blocks."),
-    "Reclined Twist": ("Lie on your back and draw knees toward your chest.", "Lower knees to one side while keeping both shoulders relaxed.", "Opposite shoulder lifts", "Use a cushion under the knees and reduce the twist until shoulders settle."),
-    "Seated Forward Fold": ("Sit with legs extended and toes pointing upward.", "Hinge forward from the hip creases and keep the front torso long.", "Spine rounds sharply", "Bend the knees and reach a strap around the feet to maintain length."),
-    "Staff Pose": ("Sit with legs straight and feet flexed, using a blanket under hips if needed.", "Press thighs down and grow tall through the crown.", "Back leans behind hips", "Elevate the seat and bring shoulders above the sitting bones."),
-    "Sugarcane Pose": ("From Half Moon, bend the lifted knee and hold the foot behind you.", "Keep the standing leg steady and open the chest without forcing the knee.", "Standing leg wobbles", "Use a wall or block and keep a soft bend in the standing knee."),
-    "Supported Shoulder Stand": ("Stack folded blankets under shoulders and keep the neck free.", "Support the back with hands and lift legs only while breathing easily.", "Head turns under load", "Keep your head centered and exit if neck pressure or discomfort appears."),
-    "Triangle Pose": ("Take a wide stance and turn the front toes forward.", "Reach over the front leg, then rest hand on shin or block without collapsing.", "Torso drops toward floor", "Bring the hand higher and lengthen both sides of the waist."),
-    "Upward-Facing Dog": ("Press hands beside the waist and extend arms without locking elbows.", "Lift thighs and chest while broadening the collarbones.", "Shoulders hunch", "Draw shoulders back and down; reduce the backbend if needed."),
-    "Wheel Pose": ("Place hands beside ears and feet hip-width apart.", "Press evenly through hands and feet and lift only within a comfortable range.", "Knees splay wide", "Track knees over feet and use a smaller supported backbend."),
-    "Wide-Legged Forward Fold": ("Stand wide with toes slightly inward and feet grounded.", "Hinge at hips and lengthen the spine before folding.", "Weight falls into heels", "Shift weight toward the balls of the feet and soften knees."),
-    "Wild Thing": ("From side plank, step the top foot behind you with control.", "Lift hips and open the chest while keeping the supporting shoulder stable.", "Supporting shoulder collapses", "Press the floor away and reduce the backbend or return to side plank."),
-    "Yogi Squat": ("Place feet wider than hips and turn toes outward comfortably.", "Lower hips between heels and bring palms together at the chest.", "Heels lift", "Widen the feet or use a folded mat under the heels."),
-    "Bound Angle Pose": ("Bring soles of feet together and let knees release outward.", "Hold ankles and sit tall on both sitting bones.", "Knees pushed down", "Support thighs with blocks and allow the hips to open gradually."),
-    "Boat Pose": ("Sit with knees bent and lean back from the hips with a long spine.", "Lift shins or straighten legs while reaching arms forward.", "Lower back rounds", "Keep knees bent and chest lifted; lower feet if the spine rounds."),
-    "Bow Pose": ("Lie on your belly, bend knees, and hold ankles from outside.", "Kick feet into hands to lift chest and thighs gently.", "Knees spread very wide", "Keep knees about hip-width and reduce the lift if the low back pinches."),
-    "Four-Limbed Staff": ("Begin in plank and shift shoulders slightly forward.", "Bend elbows close to ribs and lower with body in one straight line.", "Hips sag during lowering", "Lower knees first and keep the trunk engaged through the descent."),
-    "Forward Fold": ("Stand with feet grounded and soften your knees.", "Hinge from hips and let head and arms release without pulling.", "Hamstrings force a rounded back", "Bend knees more and rest hands on blocks or shins."),
-    "Legs-Up-The-Wall": ("Lie beside a wall and rest legs vertically against it.", "Keep the back of the pelvis supported and let shoulders soften.", "Hips too far from wall", "Scoot closer only as far as your hamstrings comfortably allow."),
-    "Lizard Pose": ("Step one foot outside the same-side hand and lower the back knee if needed.", "Keep the front knee tracking over toes and lengthen the back leg.", "Front knee rolls inward", "Press the knee outward in line with the middle toes and use blocks."),
-    "Revolved Triangle": ("Set a short, stable stance with hips facing mostly forward.", "Hinge over the front leg and rotate ribs from the upper back.", "Twist comes from a rounded low back", "Shorten stance, use a block, and lengthen the spine before rotating."),
-    "Side Plank": ("Stack one shoulder over the supporting wrist and turn feet sideways.", "Lift hips and reach the top arm upward while pressing the floor away.", "Hips drop", "Bend the lower knee for support and lift the underside of the waist."),
-    "Standing Forward Fold": ("Stand with feet hip-width and unlock the knees.", "Fold from the hip creases and let the head hang comfortably.", "Knees lock", "Keep a generous bend in the knees and distribute weight across the feet."),
-    "Sun Salutation": ("Move through each transition with breath rather than momentum.", "Keep hands grounded in plank transitions and step with control.", "Rushing between poses", "Pause in each shape and coordinate one deliberate movement per breath."),
-    "Warrior I": ("Face hips forward with a wide stance and back heel grounded.", "Bend the front knee over the ankle and reach arms upward without flaring ribs.", "Back foot turns too far inward", "Angle the back foot slightly out and widen your stance for balance."),
-    "Warrior III": ("Hinge forward from hips and extend the lifted leg behind you.", "Keep both hip points facing the floor and reach arms forward or back.", "Lifted hip opens sideways", "Lower the raised leg slightly and square the pelvis toward the floor."),
-    "Wide Squat": ("Set feet wide with toes turned out to a comfortable angle.", "Bend knees in line with toes and keep chest lifted.", "Knees collapse inward", "Press knees outward to follow the direction of your toes."),
-}
-
-for _index, (_name, (_cue1, _cue2, _mistake, _correction)) in enumerate(_EXTRA_POSES.items()):
-    _key = f"library-{_index}"
-    POSE_CONFIG[_key] = {
-        "name": _name,
+    "chair": {
+        "name": "Chair Pose (Utkatasana)",
+        "sanskrit": "Utkatasana",
+        "difficulty": "Intermediate",
+        "category": "Strength & Core",
+        "target_hold": 5,
         "image": None,
-        "description": f"Pose-specific alignment guide for {_name}.",
-        "instructions": [_cue1, _cue2],
-        "common_mistakes": [_mistake + "."],
-        "corrections": {"alignment": _correction, "posture": _correction, "visibility": "Step back until your full body is visible in the camera."},
-        "success_message": f"You are holding {_name}. Keep the movement comfortable and breathe steadily.",
+        "anim_type": "chair",
+        "guess_hint": "Sit hips back as if into a chair, bend your knees, and raise both arms upward alongside your ears.",
+        "description": "Strengthens thighs, calves, and spine while opening the chest and shoulders.",
+        "instructions": [
+            "Stand with feet together or hip-width apart.",
+            "Inhale and raise both arms straight up beside your ears.",
+            "Exhale and bend your knees, shifting weight into your heels as if sitting back into a chair.",
+            "Keep your chest lifted and spine long, drawing lower belly in."
+        ],
+        "common_mistakes": [
+            "Knees jutting out far ahead of toes.",
+            "Rounding the upper back or dropping the chest.",
+            "Putting all weight into the toes instead of the heels."
+        ],
+        "corrections": {
+            "knee bend": "Sink hips lower and keep weight in your heels.",
+            "arms": "Reach both arms upward in line with your ears.",
+            "posture": "Keep chest open and spine long.",
+            "visibility": "Step back so your full body is visible."
+        },
+        "checkpoints": [
+            {"id": "knees_bent", "label": "Knees bent 90-120° (sitting back)"},
+            {"id": "arms_up", "label": "Arms reaching upward"},
+            {"id": "chest_lifted", "label": "Chest lifted & spine long"}
+        ],
+        "success_message": "Mighty Chair Pose! Strong legs, lifted chest, and fiery focus."
+    },
+    "plank": {
+        "name": "Plank Pose (Phalakasana)",
+        "sanskrit": "Phalakasana",
+        "difficulty": "Intermediate",
+        "category": "Core & Arm Strength",
+        "target_hold": 5,
+        "image": None,
+        "anim_type": "plank",
+        "guess_hint": "Create a straight, horizontal line from head to heels, supported on hands and toes.",
+        "description": "Full-body core toner aligning shoulders over wrists and maintaining a solid neutral spine.",
+        "instructions": [
+            "Plant hands shoulder-width apart with fingers spread wide.",
+            "Step feet back so your body forms one straight diagonal line from crown to heels.",
+            "Engage your abdominals, press the floor away, and keep neck neutral."
+        ],
+        "common_mistakes": [
+            "Hips sagging down toward the floor (straining lower back).",
+            "Hips sticking way up in the air.",
+            "Collapsing chest between shoulders."
+        ],
+        "corrections": {
+            "hips": "Keep your body in a straight line: don't let hips sag or pike high.",
+            "shoulders": "Stack shoulders over wrists and press actively away from the floor.",
+            "posture": "Engage your abdominal core and squeeze your glutes.",
+            "visibility": "Turn sideways to camera so your full body length is visible."
+        },
+        "checkpoints": [
+            {"id": "straight_line", "label": "Straight line head to heels"},
+            {"id": "arms_vertical", "label": "Arms straight under shoulders"},
+            {"id": "core_active", "label": "Core engaged, no sagging"}
+        ],
+        "success_message": "Rock-solid Plank! Perfect straight line, strong core, and steady breath."
+    },
+    "cobra": {
+        "name": "Cobra Pose (Bhujangasana)",
+        "sanskrit": "Bhujangasana",
+        "difficulty": "Beginner / Intermediate",
+        "category": "Backbend & Heart Opening",
+        "target_hold": 5,
+        "image": None,
+        "anim_type": "cobra",
+        "guess_hint": "Lie on your belly, place hands beneath shoulders, and gently arch your chest forward and upward.",
+        "description": "Rejuvenating backbend that expands the chest, strengthens the spine, and invigorates energy.",
+        "instructions": [
+            "Lie prone with tops of the feet grounded hip-width apart.",
+            "Place palms under shoulders with elbows hugging ribs.",
+            "Inhale to gently peel chest forward and up using back strength, keeping neck long."
+        ],
+        "common_mistakes": [
+            "Cramming the back of the neck by throwing the chin upward.",
+            "Locking elbows and forcing height with hand pressure.",
+            "Lifting pelvis off the ground."
+        ],
+        "corrections": {
+            "chest": "Draw chest forward and up while keeping shoulders away from ears.",
+            "elbows": "Keep elbows slightly bent and close to your ribs.",
+            "posture": "Keep your pelvis and tops of feet grounded.",
+            "visibility": "Position camera at side view so your torso arch is visible."
+        },
+        "checkpoints": [
+            {"id": "chest_lifted", "label": "Chest lifted forward and up"},
+            {"id": "shoulders_down", "label": "Shoulders relaxed away from ears"},
+            {"id": "pelvis_grounded", "label": "Pelvis & legs grounded"}
+        ],
+        "success_message": "Beautiful Cobra Pose! Open chest, long spine, and graceful arch."
+    },
+    "downdog": {
+        "name": "Downward Dog (Adho Mukha Svanasana)",
+        "sanskrit": "Adho Mukha Svanasana",
+        "difficulty": "Beginner / Intermediate",
+        "category": "Full Body Stretch",
+        "target_hold": 5,
+        "image": None,
+        "anim_type": "downdog",
+        "guess_hint": "Form an inverted 'V' shape with hips pressing high into the air, arms and legs straight.",
+        "description": "Invigorating stretch lengthening hamstrings, calves, and spine while building upper body strength.",
+        "instructions": [
+            "Set hands shoulder-width and feet hip-width apart.",
+            "Press hips up and back, lengthening your tailbone toward the sky.",
+            "Spread fingers wide and press palms firmly into the ground.",
+            "Let head hang freely between biceps; soften knees if hamstrings are tight."
+        ],
+        "common_mistakes": [
+            "Rounding the spine rather than hinging at the hips.",
+            "Shoulders bunching up around the ears.",
+            "Placing hands too close or too far from feet."
+        ],
+        "corrections": {
+            "hips": "Press hips higher and back to lengthen your entire spine.",
+            "spine": "Soften knees if needed to keep your back long and straight.",
+            "arms": "Press the floor away and broaden across your upper back.",
+            "visibility": "Set camera to side view so your inverted V shape is captured."
+        },
+        "checkpoints": [
+            {"id": "inverted_v", "label": "Inverted 'V' shape formed"},
+            {"id": "hips_high", "label": "Hips lifted high & tailbone reaching"},
+            {"id": "arms_straight", "label": "Arms pressing floor away"}
+        ],
+        "success_message": "Invigorating Downward Dog! Long spine, active hands, and full body stretch."
+    },
+    "triangle": {
+        "name": "Triangle Pose (Trikonasana)",
+        "sanskrit": "Trikonasana",
+        "difficulty": "Intermediate",
+        "category": "Flexibility & Balance",
+        "target_hold": 5,
+        "image": None,
+        "anim_type": "triangle",
+        "guess_hint": "Stand wide, reach one hand down toward your shin/ankle, and extend the other straight toward the sky.",
+        "description": "Expands chest, stretches hamstrings and groins, and improves lateral spine flexibility.",
+        "instructions": [
+            "Step feet wide apart, front toes facing forward, back foot slightly angled.",
+            "Reach torso sideways over front leg, then hinge at the hip crease.",
+            "Rest front hand on shin, block, or floor; extend top arm straight up to form a vertical line.",
+            "Turn ribs and gaze upward toward the top thumb."
+        ],
+        "common_mistakes": [
+            "Collapsing chest downward toward floor instead of rotating it open.",
+            "Locking front knee excessively.",
+            "Bending spine sideways rather than hinging at hips."
+        ],
+        "corrections": {
+            "chest": "Rotate top shoulder and ribs open toward the ceiling.",
+            "arms": "Reach both arms in a straight vertical line.",
+            "posture": "Lengthen both sides of your waist equally.",
+            "visibility": "Stand where your full wide triangle stance fits in frame."
+        },
+        "checkpoints": [
+            {"id": "straight_legs", "label": "Both legs straight in wide stance"},
+            {"id": "vertical_arms", "label": "Arms forming a vertical line"},
+            {"id": "open_chest", "label": "Torso & chest rotated open"}
+        ],
+        "success_message": "Radiant Triangle Pose! Expansive reach, open chest, and steady balance."
+    },
+    "bridge": {
+        "name": "Bridge Pose (Setu Bandhasana)",
+        "sanskrit": "Setu Bandhasana",
+        "difficulty": "Beginner / Intermediate",
+        "category": "Backbend & Core",
+        "target_hold": 5,
+        "image": None,
+        "anim_type": "bridge",
+        "guess_hint": "Lie on your back with knees bent, feet flat on the floor, and lift your hips high toward the sky.",
+        "description": "Strengthens glutes, hamstrings, and back while expanding chest and lungs.",
+        "instructions": [
+            "Lie on your back, bend knees, and place feet flat hip-width apart.",
+            "Press into feet and arms to lift hips up toward the ceiling.",
+            "Keep knees parallel and directly over ankles.",
+            "Interlace hands beneath your back if comfortable, rolling shoulders under."
+        ],
+        "common_mistakes": [
+            "Letting knees splay out wide or turn inward.",
+            "Compressing the back of the neck.",
+            "Dropping hips low."
+        ],
+        "corrections": {
+            "hips": "Press through your heels and lift hips higher toward the ceiling.",
+            "knees": "Keep knees hip-width apart, parallel to each other.",
+            "chest": "Open your chest toward your chin without turning your head.",
+            "visibility": "Position camera at side view showing hip elevation."
+        },
+        "checkpoints": [
+            {"id": "hips_lifted", "label": "Hips elevated high above floor"},
+            {"id": "knees_parallel", "label": "Knees bent ~90° & parallel"},
+            {"id": "chest_open", "label": "Chest lifted toward chin"}
+        ],
+        "success_message": "Exquisite Bridge Pose! High hips, grounded feet, and open chest."
+    },
+    "warrior1": {
+        "name": "Warrior I (Virabhadrasana I)",
+        "sanskrit": "Virabhadrasana I",
+        "difficulty": "Intermediate",
+        "category": "Strength & Grounding",
+        "target_hold": 5,
+        "image": None,
+        "anim_type": "warrior1",
+        "guess_hint": "Front knee bent into a deep lunge, hips facing forward, both arms reaching high overhead.",
+        "description": "Builds lower-body power, opens hip flexors, and creates an uplifting sense of courage.",
+        "instructions": [
+            "Take a wide stance; turn front toes forward, back foot angled 45 degrees.",
+            "Square your hips forward and bend the front knee to 90 degrees.",
+            "Sweep both arms overhead, palms facing each other or together.",
+            "Keep back leg straight and grounded through the outer heel."
+        ],
+        "common_mistakes": [
+            "Hips twisted open to the side instead of facing front.",
+            "Back heel lifting off the floor.",
+            "Arching lower back excessively."
+        ],
+        "corrections": {
+            "hips": "Square both hip points directly forward.",
+            "front knee": "Stack front knee directly over front ankle.",
+            "arms": "Reach both arms high overhead with relaxed shoulders.",
+            "visibility": "Ensure whole body is in frame."
+        },
+        "checkpoints": [
+            {"id": "front_lunge", "label": "Front knee bent at ~90°"},
+            {"id": "arms_overhead", "label": "Both arms reaching high overhead"},
+            {"id": "hips_square", "label": "Hips squared forward"}
+        ],
+        "success_message": "Noble Warrior I! Grounded stance, square hips, and triumphant reach."
+    },
+    "general": {
+        "name": "General Flow & Alignment",
+        "sanskrit": "Asana General",
+        "difficulty": "All Levels",
+        "category": "Posture Check",
+        "target_hold": 5,
+        "image": None,
+        "anim_type": "mountain",
+        "guess_hint": "Stand tall facing the camera so FitSense can detect your posture and key body landmarks.",
+        "description": "Full-body visibility, symmetry check, and general postural alignment feedback.",
+        "instructions": [
+            "Step back until your entire body from head to feet is within the camera frame.",
+            "Stand tall, balance weight evenly, and breathe smoothly."
+        ],
+        "common_mistakes": ["Body partially cut off by camera boundaries."],
+        "corrections": {
+            "visibility": "Step back until your full body is visible in the camera frame.",
+            "posture": "Stand tall, stack shoulders over hips, and breathe deeply."
+        },
+        "checkpoints": [
+            {"id": "head_visible", "label": "Head & shoulders clearly visible"},
+            {"id": "torso_visible", "label": "Torso & hips in frame"},
+            {"id": "legs_visible", "label": "Legs & feet clearly detected"}
+        ],
+        "success_message": "Clear posture detected! Ready for your yoga flow."
     }
-
-POSE_CONFIG["general"] = {
-    "name": "General Pose", "image": None,
-    "description": "General full-body visibility and upright posture feedback.",
-    "instructions": ["Keep your full body visible to the camera.", "Move slowly and stay within a comfortable range."],
-    "common_mistakes": ["One or more body landmarks are not visible."],
-    "corrections": {"visibility": "Step back until your full body is visible in the camera."},
-    "success_message": "Good alignment. Hold comfortably and breathe slowly.",
 }
 
 POSE_CATALOG = {key: {"id": key, **value} for key, value in POSE_CONFIG.items()}
